@@ -1,0 +1,178 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design Tokens ── */
+:root {
+  --coral: #FF6B4A;
+  --coral-light: #FF9472;
+  --coral-dark: #E5502F;
+  --navy: #0F1B2D;
+  --navy-light: #1A2F4A;
+  --cream: #FFFBF5;
+  --cream-dark: #F5EFE6;
+  --teal: #00C9A7;
+  --teal-light: #00E5C0;
+  --gray: #9BA8B5;
+  --gray-light: #CED4DA;
+  --gray-dark: #6C757D;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  --shadow-card: 0 2px 16px rgba(15, 27, 45, 0.08);
+  --shadow-card-hover: 0 8px 32px rgba(15, 27, 45, 0.14);
+  --shadow-nav: 0 -1px 0 rgba(15, 27, 45, 0.06), 0 -4px 24px rgba(15, 27, 45, 0.06);
+}
+
+/* ── Reset & Base ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--cream);
+  color: var(--navy);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
+}
+
+/* ── App Shell — constrain to 390px mobile ── */
+#root {
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  background: #E8EDF2;
+}
+
+.app-shell {
+  position: relative;
+  width: 100%;
+  max-width: 390px;
+  min-height: 100dvh;
+  background-color: var(--cream);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Scrollable page content (above bottom nav) ── */
+.page-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 80px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Hide scrollbars but allow scroll ── */
+.scroll-hide::-webkit-scrollbar { display: none; }
+.scroll-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Component Utilities ── */
+@layer components {
+  .btn-primary {
+    @apply bg-coral text-white font-semibold rounded-full px-6 py-3 text-sm
+           active:scale-95 transition-all duration-150 shadow-sm;
+  }
+
+  .btn-outline {
+    @apply border border-coral text-coral font-semibold rounded-full px-6 py-3 text-sm
+           active:scale-95 transition-all duration-150;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium
+           whitespace-nowrap transition-all duration-150 cursor-pointer select-none;
+  }
+
+  .chip-active {
+    @apply bg-navy text-white;
+  }
+
+  .chip-inactive {
+    @apply bg-white text-navy border border-gray-200;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl shadow-card overflow-hidden;
+  }
+
+  .input-field {
+    @apply w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm text-navy
+           placeholder-gray-400 outline-none focus:border-coral focus:ring-2 focus:ring-coral/10
+           transition-all duration-150;
+  }
+
+  .section-title {
+    @apply text-lg font-bold text-navy tracking-tight;
+  }
+}
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scalePop {
+  0%   { transform: scale(0.8); opacity: 0; }
+  80%  { transform: scale(1.04); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.6; }
+}
+
+.animate-fade-up   { animation: fadeUp 0.4s ease-out forwards; }
+.animate-fade-in   { animation: fadeIn 0.3s ease-out forwards; }
+.animate-scale-pop { animation: scalePop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.animate-pulse-soft { animation: pulse-soft 2s ease-in-out infinite; }
+
+/* ── Stagger helpers ── */
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.10s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.20s; }
+.stagger-5 { animation-delay: 0.25s; }
+
+/* ── Fake map pin ── */
+.map-pin {
+  width: 36px;
+  height: 36px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+
+.map-pin-inner {
+  transform: rotate(45deg);
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* ── Safe area insets ── */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
