@@ -8,22 +8,30 @@ const stats = [
 ]
 
 const settingsRows = [
-  { icon: '👤', label: 'Edit Profile',          sub: 'Name, photo, bio' },
-  { icon: '📍', label: 'My Location',           sub: 'Enid, Oklahoma'   },
-  { icon: '🔔', label: 'Notifications',         sub: 'Manage alerts'    },
-  { icon: '🔒', label: 'Privacy & Security',    sub: 'Visibility settings' },
-  { icon: '❤️', label: 'Favorites & History',   sub: 'Places you love'  },
-  { icon: '⭐', label: 'Suggest a Business',    sub: 'Add a local spot'  },
-  { icon: '💬', label: 'Send Feedback',         sub: 'Help improve Lowki' },
-  { icon: '🌐', label: 'About Lowki',           sub: 'Version 1.0.0'    },
+  { icon: '👤', label: 'Edit Profile',          sub: 'Name, photo, bio',      action: 'toast' },
+  { icon: '📍', label: 'My Location',           sub: 'Enid, Oklahoma',        action: 'toast' },
+  { icon: '🔔', label: 'Notifications',         sub: 'Manage alerts',         action: 'toast' },
+  { icon: '🔒', label: 'Privacy & Security',    sub: 'Visibility settings',   action: 'toast' },
+  { icon: '❤️', label: 'Favorites & History',   sub: 'Places you love',       action: 'saved'  },
+  { icon: '⭐', label: 'Suggest a Business',    sub: 'Add a local spot',       action: 'toast' },
+  { icon: '💬', label: 'Send Feedback',         sub: 'Help improve Lowki',    action: 'toast' },
+  { icon: '🌐', label: 'About Lowki',           sub: 'Version 1.0.0',         action: 'about' },
 ]
 
 export default function UserProfile() {
   const navigate = useNavigate()
   const [following, setFollowing] = useState(false)
+  const [toast, setToast] = useState('')
+
+  function handleRow(action) {
+    if (action === 'saved') { navigate('/saved'); return }
+    if (action === 'about') { setToast('Lowki v1.0.0 — Built for local communities'); setTimeout(() => setToast(''), 2500); return }
+    setToast('Coming soon — this feature is in progress!')
+    setTimeout(() => setToast(''), 2500)
+  }
 
   return (
-    <div className="page-content bg-cream">
+    <div className="page-content bg-cream relative">
       {/* ── Hero ── */}
       <div
         className="relative pt-14 pb-6 px-5"
@@ -101,6 +109,7 @@ export default function UserProfile() {
           {settingsRows.map((row) => (
             <button
               key={row.label}
+              onClick={() => handleRow(row.action)}
               className="w-full flex items-center gap-3 p-4 text-left active:bg-gray-50 transition-colors duration-150"
             >
               <span className="text-xl w-8 flex-shrink-0 text-center">{row.icon}</span>
@@ -122,6 +131,13 @@ export default function UserProfile() {
           Sign Out
         </button>
       </div>
+
+      {/* ── Toast ── */}
+      {toast && (
+        <div className="fixed bottom-24 left-4 right-4 z-50 bg-navy text-white text-sm font-semibold px-4 py-3 rounded-2xl shadow-lg text-center">
+          {toast}
+        </div>
+      )}
     </div>
   )
 }
